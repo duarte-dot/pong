@@ -5,11 +5,11 @@ import java.awt.Graphics;
 
 public class Player {
 
-  public boolean right, left;
-
   public int x, y;
 
   public int width, height;
+
+  public boolean right, left;
 
   public Player(int x, int y) {
     this.x = x;

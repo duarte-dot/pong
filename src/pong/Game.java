@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -30,6 +31,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
   private boolean isRunning = false;
   private Thread thread;
+  public static boolean isMultiplayer = false;
 
   public Game() {
     this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -49,6 +51,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+
+    game.showGameModeSelection(); // Chamada do método showGameModeSelection
+    System.out.println("isMultiplayer: " + isMultiplayer);
 
     game.start();
   }
@@ -143,27 +148,69 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    if (
-      e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D
-    ) {
-      player.right = true;
-    } else if (
-      e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A
-    ) {
-      player.left = true;
+    if (!isMultiplayer) {
+      if (
+        e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D
+      ) {
+        player.right = true;
+      } else if (
+        e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A
+      ) {
+        player.left = true;
+      }
+    } else {
+      if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        player.right = true;
+      } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        player.left = true;
+      } else if (e.getKeyCode() == KeyEvent.VK_D) {
+        enemy.right = true;
+      } else if (e.getKeyCode() == KeyEvent.VK_A) {
+        enemy.left = true;
+      }
     }
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    if (
-      e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D
-    ) {
-      player.right = false;
-    } else if (
-      e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A
-    ) {
-      player.left = false;
+    if (!isMultiplayer) {
+      if (
+        e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D
+      ) {
+        player.right = false;
+      } else if (
+        e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A
+      ) {
+        player.left = false;
+      }
+    } else {
+      if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        player.right = false;
+      } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        player.left = false;
+      } else if (e.getKeyCode() == KeyEvent.VK_D) {
+        enemy.right = false;
+      } else if (e.getKeyCode() == KeyEvent.VK_A) {
+        enemy.left = false;
+      }
+    }
+  }
+
+  public void showGameModeSelection() {
+    String[] options = { "IA", "Multiplayer Local" };
+    int choice = JOptionPane.showOptionDialog(
+      null,
+      "Choose a game mode:",
+      "Game Mode Selection",
+      JOptionPane.DEFAULT_OPTION,
+      JOptionPane.PLAIN_MESSAGE,
+      null,
+      options,
+      options[0]
+    );
+
+    if (choice == 1) {
+      isMultiplayer = true;
     }
   }
 }

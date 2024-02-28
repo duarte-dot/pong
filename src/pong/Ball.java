@@ -68,7 +68,13 @@ public class Ball {
         x <= Game.enemy.x + Game.enemy.width &&
         y + height >= Game.enemy.y
       ) {
-        dy *= -1;
+        // Ajustar a posição da bola para que ela não entre dentro do inimigo
+        if (y >= Game.enemy.y + Game.enemy.height / 2) {
+          y = Game.enemy.y + Game.enemy.height;
+          dy *= -1;
+        } else {
+          dx *= -1;
+        }
       }
     }
   }
