@@ -20,7 +20,7 @@ public class Enemy {
 
   public void tick() {
     if (!Game.isMultiplayer) {
-      x += (Game.ball.x - x - 6) * 0.07;
+      x += (Game.ball.x - x - 6) * 0.08;
 
       if (x + width > Game.WIDTH) {
         x = Game.WIDTH - width;

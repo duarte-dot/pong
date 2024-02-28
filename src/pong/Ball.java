@@ -11,17 +11,23 @@ public class Ball {
   public double dx, dy;
   public double speed = 1.8;
 
+  private int minAngle = 70;
+  private int maxAngle = 120;
+  private int angle = (int) (Math.random() * (maxAngle - minAngle) + minAngle);
+
   public Ball(int x, int y) {
     this.x = x;
     this.y = y;
     this.width = 4;
     this.height = 4;
 
-    int minAngle = 45;
-    int maxAngle = 135;
-    int angle = (int) (Math.random() * (maxAngle - minAngle) + minAngle);
-    dx = Math.cos(Math.toRadians(angle));
-    dy = Math.sin(Math.toRadians(angle));
+    if (Math.random() < 0.5) {
+      dx = Math.cos(Math.toRadians(angle));
+      dy = Math.sin(Math.toRadians(angle));
+    } else {
+      dx = -Math.cos(Math.toRadians(angle));
+      dy = -Math.sin(Math.toRadians(angle));
+    }
   }
 
   public void tick() {
@@ -57,6 +63,12 @@ public class Ball {
         if (y + height <= Game.player.y + Game.player.height / 2) {
           y = Game.player.y - height;
           dy *= -1;
+
+          if (Game.player.right) {
+            dx = Math.cos(Math.toRadians(45));
+          } else if (Game.player.left) {
+            dx = Math.cos(Math.toRadians(135));
+          }
         } else {
           dx *= -1;
         }
@@ -72,9 +84,15 @@ public class Ball {
         if (y >= Game.enemy.y + Game.enemy.height / 2) {
           y = Game.enemy.y + Game.enemy.height;
           dy *= -1;
-        } else {
-          dx *= -1;
+
+          if (Game.enemy.right) {
+            dx = Math.cos(Math.toRadians(45));
+          } else if (Game.enemy.left) {
+            dx = Math.cos(Math.toRadians(135));
+          }
         }
+      } else {
+        dx *= -1;
       }
     }
   }
