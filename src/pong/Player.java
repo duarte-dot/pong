@@ -20,9 +20,9 @@ public class Player {
 
   public void tick() {
     if (right) {
-      x++;
+      x+=2;
     } else if (left) {
-      x--;
+      x-=2;
     }
 
     if (x + 40 > Game.WIDTH) {
