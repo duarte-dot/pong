@@ -33,6 +33,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
   private Thread thread;
   public static boolean isMultiplayer = false;
 
+  public static int playerPoints = 0;
+  public static int enemyPoints = 0;
+
   public Game() {
     this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
     this.addKeyListener(this);
@@ -104,6 +107,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     g = bs.getDrawGraphics();
     g.drawImage(layer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+
+    g.setFont(new java.awt.Font("Arial", 0, 20));
+
+    if (isMultiplayer) {
+      g.setColor(Color.white);
+      g.drawString("Blue: " + playerPoints, 10, 20);
+      g.drawString("Red: " + enemyPoints, 10, HEIGHT * SCALE - 10);
+    } else {
+      g.setColor(Color.white);
+      g.drawString("Points: " + playerPoints, 10, 20);
+    }
 
     bs.show();
   }
@@ -194,6 +208,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
         enemy.left = false;
       }
     }
+  }
+
+  public static int getPlayerPoints() {
+    return playerPoints;
+  }
+
+  public static int getEnemyPoints() {
+    return enemyPoints;
+  }
+
+  public static void setPlayerPoints(int playerPoints) {
+    Game.playerPoints = playerPoints;
+  }
+
+  public static void setEnemyPoints(int enemyPoints) {
+    Game.enemyPoints = enemyPoints;
   }
 
   public void showGameModeSelection() {
